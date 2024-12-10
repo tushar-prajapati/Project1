@@ -10,7 +10,7 @@ const CreateProjectPopup = ({ isOpen, onClose, onProjectCreated }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto"
+        className="bg-white rounded-lg shadow-lg w-full p-6 max-w-md mx-auto"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
         <button

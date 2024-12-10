@@ -6,11 +6,11 @@ const ProjectSegmentPopup = ({ isOpen, onClose, projectId,selectedOption,setSele
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+      className="fixed inset-0 flex items-center   justify-center bg-black bg-opacity-50 z-50"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto"
+        className="bg-white rounded-lg shadow-lg w-full  p-6 max-w-md mx-auto"
         onClick={(e) => e.stopPropagation()} 
       >
         <button

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSegmentContext } from "../Context/SegmentContext";
+import ProjectImg from "../assets/projectimg.jpg"; // Default image
 
-const ProjectSegments = ({ projectId , setSelectedOption}) => {
+const ProjectSegments = ({ projectId, setSelectedOption }) => {
   const [segments, setSegments] = useState([]);
   const [projectName, setProjectName] = useState("");
   const [thumbnail, setThumbnail] = useState("");
@@ -29,7 +30,7 @@ const ProjectSegments = ({ projectId , setSelectedOption}) => {
       if (response.data.success) {
         setSegments(response.data.data.segments);
         setProjectName(response.data.data.title);
-        setThumbnail(response.data.data.thumbnail);
+        setThumbnail(response.data.data.thumbnail || ""); // If no thumbnail, set empty string
       } else {
         alert("Failed to fetch segments: " + response.data.message);
       }
@@ -47,22 +48,17 @@ const ProjectSegments = ({ projectId , setSelectedOption}) => {
 
   const handleSegmentClick = (segmentId) => {
     setSelectedSegmentId(segmentId); // Set the selected segmentId in context
-    setSelectedOption('timeline')
+    setSelectedOption("timeline");
   };
 
   return (
     <div className="p-6 bg-white rounded-lg w-full max-w-2xl shadow-lg">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-bold text-gray-900">{projectName}</h3>
-        <button
-          className="text-sm text-gray-500 underline"
-          onClick={() => window.history.back()}
-        >
-          Back
-        </button>
       </div>
+      {/* Display either the thumbnail or the default image */}
       <img
-        src={thumbnail}
+        src={thumbnail || ProjectImg} // If no thumbnail, fallback to default image
         alt="Project Thumbnail"
         className="w-full h-48 object-cover mb-4 rounded-md shadow-sm"
       />
