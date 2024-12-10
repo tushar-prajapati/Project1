@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useSegmentContext } from "../Context/SegmentContext";
 import axios from "axios";
 import Cookies from "js-cookie";
+// import { useNavigate } from "react-router-dom"; // For navigation
 
-const TimelinePage = () => {
-  const { selectedSegmentId } = useSegmentContext(); // Access the context value
+const TimelinePage = ({setSelectedOption}) => {
+  const { selectedSegmentId } = useSegmentContext(); 
   const [segmentData, setSegmentData] = useState([]);
   const [loading, setLoading] = useState(true);
+//   const navigate = useNavigate(); 
 
   // Fetch segment data
   useEffect(() => {
@@ -83,6 +85,18 @@ const TimelinePage = () => {
           ))}
         </div>
       )}
+
+      {/* New Analysis Button */}
+      <div className="mt-6">
+        <button
+          onClick={() => setSelectedOption('newAnalysis')
+            //  { state: { segmentId: selectedSegmentId } }
+            }
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          New Analysis
+        </button>
+      </div>
     </div>
   );
 };
