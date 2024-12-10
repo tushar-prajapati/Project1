@@ -11,7 +11,7 @@ const ProjectSegmentPopup = ({ isOpen, onClose, projectId,selectedOption,setSele
     >
       <div
         className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto"
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+        onClick={(e) => e.stopPropagation()} 
       >
         <button
           className="text-gray-500 float-right text-xl"

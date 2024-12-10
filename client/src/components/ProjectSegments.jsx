@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useSegmentContext } from "../Context/SegmentContext";
 
-const ProjectSegments = ({ projectId ,selectedOption , setSelectedOption}) => {
+const ProjectSegments = ({ projectId , setSelectedOption}) => {
   const [segments, setSegments] = useState([]);
   const [projectName, setProjectName] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const { setSelectedSegmentId } = useSegmentContext(); // Access the context
 
   const fetchSegments = async () => {
     try {
@@ -46,7 +46,7 @@ const ProjectSegments = ({ projectId ,selectedOption , setSelectedOption}) => {
   }, [projectId]);
 
   const handleSegmentClick = (segmentId) => {
-    // navigate(`/segments/${segmentId}`); // Navigate to the new route with segmentId
+    setSelectedSegmentId(segmentId); // Set the selected segmentId in context
     setSelectedOption('timeline')
   };
 
