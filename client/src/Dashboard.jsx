@@ -6,6 +6,7 @@ import Sidebar from "./components/Sidebar";
 import RecentProjects from "./components/RecentProject";
 import Projects from "./components/Projects";
 import axios from "axios";
+import Timeline from "./components/Timeline";
 
 const Dashboard = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -48,9 +49,10 @@ const Dashboard = () => {
       case "recent":
         return <RecentProjects />;
       case "timeline":
-        return <div>Timeline</div>;
+        return <Timeline/>
       case "projects":
-        return <Projects/>;
+        return <Projects selectedOption={selectedOption}  setSelectedOption={setSelectedOption}
+        />;
       case "newAnalysis":
         return <div>New Analysis</div>;
       default:
