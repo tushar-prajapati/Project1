@@ -7,7 +7,6 @@ const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(null);
 
   const fetchProjects = async () => {
     try {
@@ -42,7 +41,6 @@ const Projects = () => {
       const token = Cookies.get("accessToken");
 
       if (!token) {
-        console.log("Access token is missing.");
         alert("You are not authenticated. Please log in.");
         return;
       }
@@ -57,7 +55,7 @@ const Projects = () => {
       );
 
       if (response.data.success) {
-        setSelectedProject(response.data.data);
+        console.log("Project Details:", response.data.data); // Log project details
       } else {
         alert("Failed to fetch project details: " + response.data.message);
       }
@@ -88,13 +86,8 @@ const Projects = () => {
           <div
             key={project._id}
             className="bg-white rounded-lg shadow-lg p-4 border border-gray-200 hover:shadow-xl transition cursor-pointer"
-            onClick={() => fetchProjectDetails(project._id)}
+            onClick={() => fetchProjectDetails(project._id)} // Fetch details on click
           >
-            <img
-              src={project.previewImage || "https://via.placeholder.com/150"}
-              alt={project.title}
-              className="rounded-md w-full h-32 object-cover mb-4"
-            />
             <h3 className="text-xl font-medium text-gray-900">{project.title}</h3>
             <p className="text-sm text-gray-600 mt-2">{project.description}</p>
           </div>
@@ -117,26 +110,6 @@ const Projects = () => {
               className="mt-4 text-sm text-gray-500 underline"
             >
               Cancel
-            </button>
-          </div>
-        </div>
-      )}
-
-      {selectedProject && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg mx-auto">
-            <h2 className="text-xl font-bold text-gray-800">{selectedProject.title}</h2>
-            <img
-              src={selectedProject.previewImage || "https://via.placeholder.com/150"}
-              alt={selectedProject.title}
-              className="rounded-md w-full h-48 object-cover my-4"
-            />
-            <p className="text-sm text-gray-600">{selectedProject.description}</p>
-            <button
-              onClick={() => setSelectedProject(null)}
-              className="mt-4 text-sm text-gray-500 underline"
-            >
-              Close
             </button>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -10,46 +10,39 @@ const CreateProject = ({ onProjectCreated }) => {
     reset,
     formState: { errors },
   } = useForm();
-  const [imagePreview, setImagePreview] = useState(null);
-
-  const onImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
 
   const onCreateSubmit = async (data) => {
     try {
       const token = Cookies.get("accessToken");
-
+  
       if (!token) {
         alert("You are not authenticated. Please log in.");
         return;
       }
-
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("description", data.description);
-      formData.append("segments", data.segments);
-      formData.append("image", data.image[0]);
-
+  
+      // Prepare the payload
+      const payload = {
+        title: data.title,
+        description: data.description,
+        segments: data.segments.split(",").map((seg) => seg.trim()),
+      };
+  
+      // Send the request
       const response = await axios.post(
         "http://localhost:3000/api/v1/projects/createProject",
-        formData,
+        payload,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         }
       );
-
+  
       if (response.data.success) {
         alert(response.data.message);
-        onProjectCreated(response.data.data);
+        onProjectCreated(response.data.data); // Notify parent component
         reset();
-        setImagePreview(null);
       } else {
         alert("Failed to create project: " + response.data.message);
       }
@@ -58,6 +51,7 @@ const CreateProject = ({ onProjectCreated }) => {
       alert("An error occurred while creating the project.");
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit(onCreateSubmit)} className="space-y-4">
@@ -71,7 +65,9 @@ const CreateProject = ({ onProjectCreated }) => {
           placeholder="Enter project title"
           className="w-full p-3 border border-gray-300 rounded-lg"
         />
-        {errors.title && <p className="text-sm text-red-500">{errors.title.message}</p>}
+        {errors.title && (
+          <p className="text-sm text-red-500">{errors.title.message}</p>
+        )}
       </div>
 
       <div>
@@ -98,27 +94,15 @@ const CreateProject = ({ onProjectCreated }) => {
           placeholder="Enter segments"
           className="w-full p-3 border border-gray-300 rounded-lg"
         />
-        {errors.segments && <p className="text-sm text-red-500">{errors.segments.message}</p>}
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Thumbnail Image
-        </label>
-        <input
-          {...register("image", { required: "Image is required" })}
-          type="file"
-          accept="image/*"
-          onChange={onImageChange}
-          className="w-full p-3 border border-gray-300 rounded-lg"
-        />
-        {imagePreview && (
-          <img src={imagePreview} alt="Preview" className="mt-2 rounded-md w-full h-32 object-cover" />
+        {errors.segments && (
+          <p className="text-sm text-red-500">{errors.segments.message}</p>
         )}
-        {errors.image && <p className="text-sm text-red-500">{errors.image.message}</p>}
       </div>
 
-      <button type="submit" className="w-full p-3 bg-blue-500 text-white rounded-lg">
+      <button
+        type="submit"
+        className="w-full p-3 bg-blue-500 text-white rounded-lg"
+      >
         Create Project
       </button>
     </form>
