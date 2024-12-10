@@ -13,7 +13,7 @@ const Projects = ({ selectedOption, setSelectedOption }) => {
   const [isProjectSegmentOpen, setIsProjectSegmentOpen] = useState(false);
   const [isUploadImageOpen, setIsUploadImageOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
-
+//hello
   const fetchProjects = async () => {
     try {
       const token = Cookies.get("accessToken");
