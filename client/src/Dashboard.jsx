@@ -48,9 +48,11 @@ const Dashboard = () => {
       case "recent":
         return <RecentProjects />;
       case "timeline":
-        return <div>Timeline Content</div>;
+        return <div>Timeline</div>;
       case "projects":
         return <Projects/>;
+      case "newAnalysis":
+        return <div>New Analysis</div>;
       default:
         return <div>Welcome to SadakNirikshak Dashboard</div>;
     }

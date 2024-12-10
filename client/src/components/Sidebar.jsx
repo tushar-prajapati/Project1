@@ -27,6 +27,16 @@ const Sidebar = ({ isMinimized, setIsMinimized, selectedOption, setSelectedOptio
           {!isMinimized && "Recent Projects"}
           {isMinimized && "📁"}
         </div>
+        
+        <div
+          className={`p-2 rounded-md cursor-pointer hover:bg-gray-700 ${
+            selectedOption === "projects" ? "bg-gray-700" : ""
+          }`}
+          onClick={() => setSelectedOption("projects")}
+        >
+          {!isMinimized && "Projects"}
+          {isMinimized && "📂"}
+        </div>
         <div
           className={`p-2 rounded-md cursor-pointer hover:bg-gray-700 ${
             selectedOption === "timeline" ? "bg-gray-700" : ""
@@ -38,12 +48,12 @@ const Sidebar = ({ isMinimized, setIsMinimized, selectedOption, setSelectedOptio
         </div>
         <div
           className={`p-2 rounded-md cursor-pointer hover:bg-gray-700 ${
-            selectedOption === "projects" ? "bg-gray-700" : ""
+            selectedOption === "newAnalysis" ? "bg-gray-700" : ""
           }`}
-          onClick={() => setSelectedOption("projects")}
+          onClick={() => setSelectedOption("newAnalysis")}
         >
-          {!isMinimized && "Projects"}
-          {isMinimized && "📂"}
+          {!isMinimized && "NewAnalysis"}
+          {isMinimized && "🕒"}
         </div>
       </div>
     </div>

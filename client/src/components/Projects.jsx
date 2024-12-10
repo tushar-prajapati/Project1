@@ -2,16 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import CreateProject from "./CreateProject";
+import ProjectSegments from "./ProjectSegments";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   const fetchProjects = async () => {
     try {
       const token = Cookies.get("accessToken");
-
+      console.log("projects")
       if (!token) {
         alert("You are not authenticated. Please log in.");
         return;
@@ -55,7 +57,7 @@ const Projects = () => {
       );
 
       if (response.data.success) {
-        console.log("Project Details:", response.data.data); // Log project details
+        setSelectedProject(response.data.data);
       } else {
         alert("Failed to fetch project details: " + response.data.message);
       }
@@ -114,8 +116,15 @@ const Projects = () => {
           </div>
         </div>
       )}
+
+      {selectedProject && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <ProjectSegments projectId={selectedProject._id} />
+        </div>
+      )}
     </div>
   );
+
 };
 
 export default Projects;
