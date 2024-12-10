@@ -3,14 +3,15 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import CreateProjectPopup from "./CreateProjectPopup";
 import ProjectSegmentPopup from "./ProjectSegmentPopup";
-import ProjectImg from "../assets/projectimg.jpg"; 
+import ProjectImg from "../assets/projectimg.jpg";
+import ImageUploadPopup from "./ImageUploadPopup"; 
 
-
-const Projects = ({selectedOption,setSelectedOption}) => {
+const Projects = ({ selectedOption, setSelectedOption }) => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const [isProjectSegmentOpen, setIsProjectSegmentOpen] = useState(false);
+  const [isUploadImageOpen, setIsUploadImageOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
 
   const fetchProjects = async () => {
@@ -66,22 +67,32 @@ const Projects = ({selectedOption,setSelectedOption}) => {
               setIsProjectSegmentOpen(true);
             }}
           >
-                <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12 5v14M5 12h14" />
-    </svg>
             <img src={ProjectImg} alt="Description" />
             <h3 className="text-xl font-medium text-gray-900">{project.title}</h3>
             <p className="text-sm text-gray-600 mt-2">{project.description}</p>
+            <div
+              onClick={(e) => {
+                e.stopPropagation(); 
+                setSelectedProjectId(project._id);
+                setIsUploadImageOpen(true); 
+              }}
+              className="text-blue-500 cursor-pointer mt-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Upload Image
+            </div>
           </div>
         ))}
         <div
@@ -102,8 +113,16 @@ const Projects = ({selectedOption,setSelectedOption}) => {
         isOpen={isProjectSegmentOpen}
         onClose={() => setIsProjectSegmentOpen(false)}
         projectId={selectedProjectId}
-        selectedOption={selectedOption} 
-         setSelectedOption={setSelectedOption}      />
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+      />
+
+      {/* Image Upload Popup */}
+      <ImageUploadPopup
+        isOpen={isUploadImageOpen}
+        onClose={() => setIsUploadImageOpen(false)}
+        projectId={selectedProjectId}
+      />
     </div>
   );
 };
