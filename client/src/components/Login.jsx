@@ -14,11 +14,14 @@ const Login = ({ openSignup, onLoginSuccess }) => {
 
       if (response.data.success) {
         const { accessToken, refreshToken, user } = response.data.data;
+        console.log(user,'user')
 
         // Store tokens and user data
         Cookies.set("accessToken", accessToken, { expires: 1 }); // Store access token
         Cookies.set("refreshToken", refreshToken, { expires: 10 }); // Store refresh token
         Cookies.set("user", JSON.stringify(user)); // Store user info
+        localStorage.setItem("user", JSON.stringify(user));
+
 
         // Notify parent about login success
         if (onLoginSuccess) {
