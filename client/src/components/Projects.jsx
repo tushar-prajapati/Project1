@@ -3,8 +3,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import CreateProjectPopup from "./CreateProjectPopup";
 import ProjectSegmentPopup from "./ProjectSegmentPopup";
-import ProjectImg from "../assets/projectimg.jpg";
-import ImageUploadPopup from "./ImageUploadPopup"; 
+import ProjectImg from "../assets/projectimg.jpg"; // Default image
+import ImageUploadPopup from "./ImageUploadPopup";
 
 const Projects = ({ selectedOption, setSelectedOption }) => {
   const [projects, setProjects] = useState([]);
@@ -13,7 +13,34 @@ const Projects = ({ selectedOption, setSelectedOption }) => {
   const [isProjectSegmentOpen, setIsProjectSegmentOpen] = useState(false);
   const [isUploadImageOpen, setIsUploadImageOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
-//hello
+
+  // Fetch project thumbnail
+  const fetchThumbnail = async (projectId) => {
+    try {
+      const token = Cookies.get("accessToken");
+      if (!token) {
+        alert("You are not authenticated. Please log in.");
+        return;
+      }
+
+      const response = await axios.get(`http://localhost:3000/api/v1/projects/getThumbnail/${projectId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success) {
+        return response.data.data.thumbnail; // Return the thumbnail URL
+      } else {
+        console.error("Failed to fetch thumbnail:", response.data.message);
+        return null; // Return null if no thumbnail found
+      }
+    } catch (error) {
+      console.error("Error fetching thumbnail:", error);
+      return null; // Return null if there's an error
+    }
+  };
+
   const fetchProjects = async () => {
     try {
       const token = Cookies.get("accessToken");
@@ -29,7 +56,14 @@ const Projects = ({ selectedOption, setSelectedOption }) => {
       });
 
       if (response.data.success) {
-        setProjects(response.data.data);
+        // For each project, fetch its thumbnail
+        const projectsWithThumbnails = await Promise.all(
+          response.data.data.map(async (project) => {
+            const thumbnail = await fetchThumbnail(project._id);
+            return { ...project, thumbnail }; // Attach thumbnail to project
+          })
+        );
+        setProjects(projectsWithThumbnails);
       } else {
         alert("Failed to fetch projects: " + response.data.message);
       }
@@ -67,7 +101,12 @@ const Projects = ({ selectedOption, setSelectedOption }) => {
               setIsProjectSegmentOpen(true);
             }}
           >
-            <img src={ProjectImg} alt="Description" />
+            {/* Conditionally render project thumbnail or fallback to default image */}
+            <img
+              src={project.thumbnail || ProjectImg} // Use thumbnail if available, else fallback to default image
+              alt="Project Thumbnail"
+              className="w-full h-48 object-cover rounded-md"
+            />
             <h3 className="text-xl font-medium text-gray-900">{project.title}</h3>
             <p className="text-sm text-gray-600 mt-2">{project.description}</p>
             <div
