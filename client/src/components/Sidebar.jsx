@@ -3,7 +3,7 @@ import React from "react";
 const Sidebar = ({ isMinimized, setIsMinimized, selectedOption, setSelectedOption }) => {
   return (
     <div
-      className={`h-screen bg-gray-800 text-white flex-shrink-0 transition-all duration-300 ${
+      className={`h-screen  bg-gray-900 text-white flex-shrink-0 transition-all duration-300 ${
         isMinimized ? "w-16" : "w-64"
       }`}
     >
