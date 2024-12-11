@@ -9,6 +9,7 @@ const NewAnalysis = () => {
   const segmentId = selectedSegmentId; // Get the segmentId
   const [files, setFiles] = useState([]);
   const [responseData, setResponseData] = useState(null); // Store the response data
+  const [isLoading, setIsLoading] = useState(false); // Loader state
 
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
@@ -25,7 +26,6 @@ const NewAnalysis = () => {
     const imageFiles = files.filter((file) => file.type.startsWith("image/"));
     const videoFiles = files.filter((file) => file.type.startsWith("video/"));
 
-    // If no image or video files are selected
     if (imageFiles.length === 0 && videoFiles.length === 0) {
       alert("Please select at least one image or video file.");
       return;
@@ -38,13 +38,14 @@ const NewAnalysis = () => {
         return;
       }
 
+      let photoResponse, videoResponse;
+
       // Upload images (if any)
-      let photoResponse;
       if (imageFiles.length > 0) {
         const photoFormData = new FormData();
-        photoFormData.append("segmentId", segmentId); // Append segmentId for images
+        photoFormData.append("segmentId", segmentId);
         imageFiles.forEach((file) => {
-          photoFormData.append("photos", file); // "photos" is the key for images
+          photoFormData.append("photos", file);
         });
 
         photoResponse = await axios.post("http://localhost:3000/api/v1/analyse/upload/photos", photoFormData, {
@@ -56,12 +57,11 @@ const NewAnalysis = () => {
       }
 
       // Upload videos (if any)
-      let videoResponse;
       if (videoFiles.length > 0) {
         const videoFormData = new FormData();
-        videoFormData.append("segmentId", segmentId); // Append segmentId for videos
+        videoFormData.append("segmentId", segmentId);
         videoFiles.forEach((file) => {
-          videoFormData.append("video", file); // "video" is the key for videos
+          videoFormData.append("video", file);
         });
 
         videoResponse = await axios.post("http://localhost:3000/api/v1/analyse/upload/video", videoFormData, {
@@ -72,20 +72,33 @@ const NewAnalysis = () => {
         });
       }
 
-      // If either response is successful, update state with the response data
       if (photoResponse?.data.success || videoResponse?.data.success) {
         const combinedData = {
           images: photoResponse?.data.message?.analysis?.images || [],
           videoFrames: videoResponse?.data.message?.analysis?.videoFrames || [],
         };
-        setResponseData(combinedData); // Set the response data for display
-        setFiles([]); // Optionally clear the file list after successful upload
+        setResponseData(combinedData);
+        setFiles([]);
       }
 
       alert("Successfully uploaded files.");
     } catch (error) {
       console.error("Upload failed", error);
       alert("An error occurred while uploading the files.");
+    }
+  };
+
+  const handleAnalyze = async () => {
+    setIsLoading(true); // Start loading
+    try {
+      // Simulate a delay for analysis (replace this with your actual API call)
+      await new Promise((resolve) => setTimeout(resolve, 100000));
+      alert("Analysis complete!");
+    } catch (error) {
+      console.error("Analysis failed", error);
+      alert("An error occurred during analysis.");
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
@@ -100,7 +113,6 @@ const NewAnalysis = () => {
           <p className="text-lg text-gray-700 text-center mb-8">No Segment ID provided.</p>
         )}
 
-        {/* Upload Tile */}
         {!responseData ? (
           <div className="w-full border-4 border-dashed border-gray-300 rounded-lg p-10 bg-white shadow-lg text-center">
             <input
@@ -140,7 +152,6 @@ const NewAnalysis = () => {
           </div>
         ) : (
           <div className="w-full flex flex-wrap justify-center mt-6">
-            {/* Display Images and Video Frames */}
             {responseData.images.length > 0 && (
               <div className="flex flex-wrap justify-center gap-4">
                 {responseData.images.map((image, index) => (
@@ -169,10 +180,17 @@ const NewAnalysis = () => {
               </div>
             )}
 
-            {/* Analyze Button */}
             <div className="w-full flex justify-center mt-6">
-              <button className="px-6 py-3 bg-blue-500 text-white rounded-lg text-lg hover:bg-blue-600 shadow-md">
-                Analyze
+              <button
+                onClick={handleAnalyze}
+                className={`px-6 py-3 ${
+                  isLoading ? "bg-gray-400" : "bg-blue-500"
+                } text-white rounded-lg text-lg ${
+                  isLoading ? "" : "hover:bg-blue-600"
+                } shadow-md`}
+                disabled={isLoading} // Disable button during loading
+              >
+                {isLoading ? "Analyzing..." : "Analyze"}
               </button>
             </div>
           </div>
