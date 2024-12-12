@@ -10,6 +10,7 @@ const UploadData = () => {
   const [files, setFiles] = useState([]);
   const [responseData, setResponseData] = useState(null); // Store the response data
   const [isLoading, setIsLoading] = useState(false); // Loader state
+  console.log(segmentId,'segmentId')
 
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);

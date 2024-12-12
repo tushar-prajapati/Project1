@@ -6,9 +6,17 @@ const SegmentContext = createContext();
 // Create a provider component
 export const SegmentProvider = ({ children }) => {
   const [selectedSegmentId, setSelectedSegmentId] = useState(null);
+  const [analysisData, setAnalysisData] = useState(null); // New state for analysis data
 
   return (
-    <SegmentContext.Provider value={{ selectedSegmentId, setSelectedSegmentId }}>
+    <SegmentContext.Provider
+      value={{
+        selectedSegmentId,
+        setSelectedSegmentId,
+        analysisData,
+        setAnalysisData, // Provide a setter for analysis data
+      }}
+    >
       {children}
     </SegmentContext.Provider>
   );
