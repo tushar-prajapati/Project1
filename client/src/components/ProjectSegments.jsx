@@ -5,16 +5,14 @@ import { useSegmentContext } from "../Context/SegmentContext";
 import { FaFolder } from "react-icons/fa";
 import ProjectImg from "../assets/projectimg.jpg";
 import SegmentPopup from "./SegmentPopup";
-// import { useHistory } from "react-router-dom"; // For navigation
 
 const ProjectSegments = ({ projectId, setSelectedOption }) => {
   const [segments, setSegments] = useState([]);
   const [projectName, setProjectName] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-  const { setSelectedSegmentId } = useSegmentContext();
+  const { setSelectedSegmentId } = useSegmentContext(); // Getting setSelectedSegmentId from context
   const [selectedSegment, setSelectedSegment] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  // const history = useHistory(); // Use this for navigation
 
   const fetchSegments = async () => {
     try {
@@ -66,9 +64,9 @@ const ProjectSegments = ({ projectId, setSelectedOption }) => {
   };
 
   const handleTileClick = (segmentId) => {
-    // Navigate to the TileLine page for this segment
-    // history.push(`/tileline/${segmentId}`);
-    setSelectedOption('timeline')
+    // Set the selected segmentId in the context
+    setSelectedSegmentId(segmentId); // Set the selectedSegmentId globally in the context
+    setSelectedOption('timeline');
   };
 
   const handlePopupClose = () => {
@@ -95,7 +93,7 @@ const ProjectSegments = ({ projectId, setSelectedOption }) => {
           <div
             key={segment._id}
             className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow hover:shadow-md cursor-pointer relative"
-            onClick={() => handleTileClick(segment._id)} // Navigate on tile click
+            onClick={() => handleTileClick(segment._id)} // Navigate and set segment ID in context
           >
             <div className="text-4xl text-yellow-500 mb-3">
               <FaFolder />
