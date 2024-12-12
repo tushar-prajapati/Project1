@@ -4,7 +4,7 @@ import { AiOutlineUpload } from "react-icons/ai"; // Import upload icon
 import axios from "axios"; // Import axios
 import Cookies from "js-cookie";
 
-const UserNewAnalysis = () => {
+const UploadData = () => {
   const { selectedSegmentId } = useSegmentContext();
   const segmentId = selectedSegmentId; // Get the segmentId
   const [files, setFiles] = useState([]);
@@ -200,4 +200,4 @@ const UserNewAnalysis = () => {
   );
 };
 
-export default UserNewAnalysis;
+export default UploadData;

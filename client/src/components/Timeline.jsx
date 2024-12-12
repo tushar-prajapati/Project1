@@ -88,14 +88,14 @@ console.log(selectedSegmentId,'selectedSegmentId')
 
       {/* New Analysis Button */}
       <div className="mt-6">
-        <button
+        {/* <button
           onClick={() => setSelectedOption('newAnalysis')
             //  { state: { segmentId: selectedSegmentId } }
             }
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         >
           New Analysis
-        </button>
+        </button> */}
       </div>
     </div>
   );

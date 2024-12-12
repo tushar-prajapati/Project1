@@ -50,9 +50,9 @@ const UserSidebar = ({ isMinimized, setIsMinimized, selectedOption, setSelectedO
           className={`p-2 rounded-md cursor-pointer hover:bg-gray-700 ${
             selectedOption === "newAnalysis" ? "bg-gray-700" : ""
           }`}
-          onClick={() => setSelectedOption("newAnalysis")}
+          onClick={() => setSelectedOption("usernewanalysisfol")}
         >
-          {!isMinimized && "NewAnalysis"}
+          {!isMinimized && "New Analysis"}
           {isMinimized && "🕒"}
         </div>
       </div>
