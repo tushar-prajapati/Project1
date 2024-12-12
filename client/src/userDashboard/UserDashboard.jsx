@@ -6,8 +6,10 @@ import Navbar from "../components/DashNavbar";
 // import RecentProjects from "./components/RecentProject";
 // import Projects from "./components/Projects";
 import axios from "axios";
-import UserNewAnalysis from "./UserNewAnalysis";
+import UserNewAnalysis from "./UploadData";
 import UserSidebar from "./UserSidebar";
+import UploadData from "./UploadData";
+import UserNewAnalysisfol from "./UserNewAnalysisfol";
 // import Timeline from "./components/Timeline";
 // import NewAnalysis from "./components/NewAnalysis";
 
@@ -56,8 +58,10 @@ const UserDashboard = () => {
     //   case "projects":
     //     return <Projects selectedOption={selectedOption}  setSelectedOption={setSelectedOption}
     //     />;
-      case "newAnalysis":
-        return <div><UserNewAnalysis/></div>;
+      case "uploadData":
+        return <div><UploadData/></div>;
+      case "usernewanalysisfol":
+        return <div><UserNewAnalysisfol/></div>;
       default:
         return <div>Welcome to SadakNirikshak Dashboard</div>;
     }
