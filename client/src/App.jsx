@@ -16,7 +16,7 @@ const App = () => {
     const refreshToken = Cookies.get("refreshToken");
     const userData = JSON.parse(localStorage.getItem("user"));
 
-if(userData.isAdmin == true){
+if(userData && userData.isAdmin == true){
     // If access token is valid, redirect to dashboard
     if (accessToken && checkAccessToken(accessToken)) {
       navigate("/dashboard");
