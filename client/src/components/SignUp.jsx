@@ -15,13 +15,15 @@ const SignUp = ({ openLogin }) => {
   const onSignupSubmit = async (data) => {
     if(data.isAdmin==true){
       try {
+        const isAdminbool = JSON.parse(data.isAdmin.toLowerCase() === 'true');
+
         // API request to register the Admin
         const response = await axios.post("http://localhost:3000/api/v1/admins/register", {
           fullName: data.name,
           email: data.email,
           username: data.username,
           password: data.password,
-          isAdmin: data.isAdmin, 
+          isAdmin: isAdminbool, 
           masterUsername : data.masterUsername
         });
   
@@ -37,6 +39,8 @@ const SignUp = ({ openLogin }) => {
       }
     }
     else{
+      const isAdminbool = JSON.parse(data.isAdmin.toLowerCase() === 'true');
+
     try {
       // API request to register the user
       const response = await axios.post("http://localhost:3000/api/v1/users/register", {
@@ -44,7 +48,7 @@ const SignUp = ({ openLogin }) => {
         email: data.email,
         username: data.username,
         password: data.password,
-        isAdmin: data.isAdmin, 
+        isAdmin: isAdminbool, 
         masterUsername : data.masterUsername
 
       });
