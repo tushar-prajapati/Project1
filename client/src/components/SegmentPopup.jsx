@@ -2,17 +2,30 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-
 const SegmentPopup = ({ isOpen, onClose, segmentData, onSubmit }) => {
   const [formData, setFormData] = useState({
-    length:  "",
-    startLatitude:  "",
-    startLongitude:  "",
-    endLatitude:  "",
-    endLongitude:  "",
-    userId:   "",
+    length: "",
+    startLatitude: "",
+    startLongitude: "",
+    endLatitude: "",
+    endLongitude: "",
+    userId: "",
   });
   const [employeeIds, setEmployeeIds] = useState([]); // State to store employee IDs
+
+  useEffect(() => {
+    // Reset formData when the popup is opened
+    if (isOpen) {
+      setFormData({
+        length:  "",
+        startLatitude:  "",
+        startLongitude:  "",
+        endLatitude:  "",
+        endLongitude:  "",
+        userId: "",
+      });
+    }
+  }, [isOpen, segmentData]); // Trigger when isOpen or segmentData changes
 
   useEffect(() => {
     // Get employee IDs from local storage
@@ -29,11 +42,12 @@ const SegmentPopup = ({ isOpen, onClose, segmentData, onSubmit }) => {
 
   const handleSubmit = async () => {
     try {
-        const token = Cookies.get("accessToken");
-        if (!token) {
-          alert("You are not authenticated. Please log in.");
-          return;
-        }
+      const token = Cookies.get("accessToken");
+      if (!token) {
+        alert("You are not authenticated. Please log in.");
+        return;
+      }
+
       // Send data to the API, segmentId is sent separately
       const payload = {
         ...formData, // Include the form data
@@ -44,10 +58,10 @@ const SegmentPopup = ({ isOpen, onClose, segmentData, onSubmit }) => {
         "http://localhost:3000/api/v1/segments/setSegmentInfo",
         payload,
         {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.data.success) {
@@ -68,7 +82,7 @@ const SegmentPopup = ({ isOpen, onClose, segmentData, onSubmit }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg w-96">
+      <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg ">
         <h2 className="text-xl font-bold mb-4">Segment ID: {segmentData.segmentId}</h2>
         <div className="overflow-y-auto max-h-80">
           {Object.keys(formData).map((field) => {
