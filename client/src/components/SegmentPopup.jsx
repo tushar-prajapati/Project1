@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 
-const SegmentPopup = ({ isOpen, onClose, segmentData, onSubmit }) => {
+
+const SegmentPopup = ({ isOpen, onClose, segmentData, onSubmit,projectId }) => {
+    console.log(segmentData,'segmentData')
+    console.log(projectId,'projectId')
   const [formData, setFormData] = useState({
-    segmentId: segmentData.segmentId || "",
+    // segmentId: segmentData.segmentId || "",
     length: segmentData.length || "",
     startLatitude: segmentData.startLatitude || "",
     startLongitude: segmentData.startLongitude || "",
@@ -25,11 +28,12 @@ const SegmentPopup = ({ isOpen, onClose, segmentData, onSubmit }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg w-96">
+      <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
         <h2 className="text-xl font-bold mb-4">Segment Details</h2>
         <div
           className="overflow-y-auto max-h-80" // Added scrollable container with a fixed height
         >
+            {segmentData.segmentId}
           {Object.keys(formData).map((field) => (
             <div key={field} className="mb-4">
               <label className="block text-gray-700 font-medium mb-2">

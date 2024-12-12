@@ -104,6 +104,7 @@ const ProjectSegments = ({ projectId, setSelectedOption }) => {
         onClose={handlePopupClose}
         segmentData={selectedSegment || {}}
         onSubmit={handlePopupSubmit}
+        projectId={projectId}
       />
     </div>
   );
