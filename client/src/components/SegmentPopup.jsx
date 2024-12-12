@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const SegmentPopup = ({ isOpen, onClose, segmentData, onSubmit }) => {
+const SegmentPopup = ({ isOpen, onClose, segmentData, onSubmit,setSelectedOption }) => {
   const [formData, setFormData] = useState({
     length: "",
     startLatitude: "",
@@ -69,6 +69,7 @@ const SegmentPopup = ({ isOpen, onClose, segmentData, onSubmit }) => {
         alert("Segment information updated successfully.");
         onSubmit(formData); // Notify the parent component about the successful submission
         onClose(); // Close the popup after submission
+        setSelectedOption('timeline')
       } else {
         alert("Failed to update segment information: " + response.data.message);
       }
