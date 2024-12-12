@@ -7,7 +7,7 @@ import RecentProjects from "./components/RecentProject";
 import Projects from "./components/Projects";
 import axios from "axios";
 import Timeline from "./components/Timeline";
-import NewAnalysis from "./components/NewAnalysis";
+import AnalyzeData from "./components/AnalyzeData";
 
 const Dashboard = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -51,6 +51,8 @@ const Dashboard = () => {
         return <RecentProjects />;
       case "timeline":
         return <Timeline setSelectedOption={setSelectedOption}/>
+      case "AnalyzeData":
+        return <AnalyzeData setSelectedOption={setSelectedOption}/>
       case "projects":
         return <Projects selectedOption={selectedOption}  setSelectedOption={setSelectedOption}
         />;
