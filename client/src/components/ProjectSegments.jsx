@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSegmentContext } from "../Context/SegmentContext";
-import { FaFolder } from "react-icons/fa"; // Importing folder icon
-import ProjectImg from "../assets/projectimg.jpg"; // Default image
+import { FaFolder } from "react-icons/fa";
+import ProjectImg from "../assets/projectimg.jpg";
+import SegmentPopup from "./SegmentPopup";
 
 const ProjectSegments = ({ projectId, setSelectedOption }) => {
   const [segments, setSegments] = useState([]);
   const [projectName, setProjectName] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-  const { setSelectedSegmentId } = useSegmentContext(); // Access the context
+  const { setSelectedSegmentId } = useSegmentContext();
+  const [selectedSegment, setSelectedSegment] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const fetchSegments = async () => {
     try {
@@ -31,7 +34,7 @@ const ProjectSegments = ({ projectId, setSelectedOption }) => {
       if (response.data.success) {
         setSegments(response.data.data.segments);
         setProjectName(response.data.data.title);
-        setThumbnail(response.data.data.thumbnail || ""); // If no thumbnail, set empty string
+        setThumbnail(response.data.data.thumbnail || "");
       } else {
         alert("Failed to fetch segments: " + response.data.message);
       }
@@ -47,9 +50,26 @@ const ProjectSegments = ({ projectId, setSelectedOption }) => {
     }
   }, [projectId]);
 
-  const handleSegmentClick = (segmentId) => {
-    setSelectedSegmentId(segmentId); // Set the selected segmentId in context
-    setSelectedOption("timeline");
+  const handleSegmentClick = (segment) => {
+    setSelectedSegment({
+      segmentId: segment._id,
+      length: 5,
+      startLatitude: 333,
+      startLongitude: 21,
+      endLatitude: 333,
+      endLongitude: 21,
+      userId: "675a00a30bc5481eba8c1289",
+    });
+    setIsPopupOpen(true);
+  };
+
+  const handlePopupClose = () => {
+    setIsPopupOpen(false);
+  };
+
+  const handlePopupSubmit = (data) => {
+    console.log("Submitted Data:", data);
+    // You can send this data to an API or process it as needed
   };
 
   return (
@@ -57,9 +77,8 @@ const ProjectSegments = ({ projectId, setSelectedOption }) => {
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-2xl font-bold text-gray-900">{projectName}</h3>
       </div>
-      {/* Display either the thumbnail or the default image */}
       <img
-        src={thumbnail || ProjectImg} // If no thumbnail, fallback to default image
+        src={thumbnail || ProjectImg}
         alt="Project Thumbnail"
         className="w-full h-48 object-cover mb-6 rounded-md shadow-md"
       />
@@ -68,7 +87,7 @@ const ProjectSegments = ({ projectId, setSelectedOption }) => {
           <div
             key={segment._id}
             className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow hover:shadow-md cursor-pointer"
-            onClick={() => handleSegmentClick(segment._id)}
+            onClick={() => handleSegmentClick(segment)}
           >
             <div className="text-4xl text-yellow-500 mb-3">
               <FaFolder />
@@ -80,6 +99,13 @@ const ProjectSegments = ({ projectId, setSelectedOption }) => {
           </div>
         ))}
       </div>
+      <SegmentPopup
+        isOpen={isPopupOpen}
+        onClose={handlePopupClose}
+        segmentData={selectedSegment || {}}
+        onSubmit={handlePopupSubmit}
+        projectId={projectId}
+      />
     </div>
   );
 };

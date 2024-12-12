@@ -9,6 +9,43 @@ const Login = ({ openSignup, onLoginSuccess }) => {
   const navigate = useNavigate();
 
   const onLoginSubmit = async (data) => {
+    console.log(data.isAdmin,'isadmin')
+    if(data.isAdmin=='true'){
+      console.log('in admin')
+      try {
+        const response = await axios.post("http://localhost:3000/api/v1/admins/login", data);
+  
+        if (response.data.success) {
+          const { accessToken, refreshToken, user } = response.data.data;
+          console.log(user,'user')
+  
+          // Store tokens and user data
+          Cookies.set("accessToken", accessToken, { expires: 1 }); // Store access token
+          Cookies.set("refreshToken", refreshToken, { expires: 10 }); // Store refresh token
+          Cookies.set("user", JSON.stringify(user)); // Store user info
+          localStorage.setItem("user", JSON.stringify(user));
+  
+  
+          // Notify parent about login success
+          if (onLoginSuccess) {
+            onLoginSuccess(user);
+          }
+  
+          alert(response.data.message);
+  
+          // Redirect to dashboard or any other page
+          navigate("/dashboard");
+        } else {
+          alert("Login failed. Please check your credentials.");
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        alert("An error occurred during login. Please try again.");
+      }
+    }
+    else{
+      console.log('in users')
+
     try {
       const response = await axios.post("http://localhost:3000/api/v1/users/login", data);
 
@@ -31,7 +68,7 @@ const Login = ({ openSignup, onLoginSuccess }) => {
         alert(response.data.message);
 
         // Redirect to dashboard or any other page
-        navigate("/dashboard");
+        navigate("/userdashboard");
       } else {
         alert("Login failed. Please check your credentials.");
       }
@@ -39,6 +76,7 @@ const Login = ({ openSignup, onLoginSuccess }) => {
       console.error("Login error:", error);
       alert("An error occurred during login. Please try again.");
     }
+  }
   };
 
   return (
@@ -67,6 +105,30 @@ const Login = ({ openSignup, onLoginSuccess }) => {
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           {errors.password && <span className="text-red-500 text-xs">{errors.password.message}</span>}
+        </div>
+
+                {/* Is Admin Radio Buttons */}
+                <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Are you an admin?</label>
+          <div className="flex items-center">
+            <input
+              type="radio"
+              {...register("isAdmin", { required: "Select admin status" })}
+              value="true"
+              className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            />
+            <label className="ml-2 text-sm text-gray-600">Yes</label>
+          </div>
+          <div className="flex items-center mt-2">
+            <input
+              type="radio"
+              {...register("isAdmin", { required: "Select admin status" })}
+              value="false"
+              className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            />
+            <label className="ml-2 text-sm text-gray-600">No</label>
+          </div>
+          {errors.isAdmin && <span className="text-red-500 text-xs">{errors.isAdmin.message}</span>}
         </div>
 
         {/* Submit Button */}
