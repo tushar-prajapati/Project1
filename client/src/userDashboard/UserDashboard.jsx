@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./components/DashNavbar";
-import Sidebar from "./components/Sidebar";
-import RecentProjects from "./components/RecentProject";
-import Projects from "./components/Projects";
+import Navbar from "../components/DashNavbar";
+// import Sidebar from "../components/Sidebar";
+// import RecentProjects from "./components/RecentProject";
+// import Projects from "./components/Projects";
 import axios from "axios";
-import Timeline from "./components/Timeline";
-import NewAnalysis from "./components/NewAnalysis";
+import UserNewAnalysis from "./UserNewAnalysis";
+import UserSidebar from "./UserSidebar";
+// import Timeline from "./components/Timeline";
+// import NewAnalysis from "./components/NewAnalysis";
 
-const Dashboard = () => {
+const UserDashboard = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [selectedOption, setSelectedOption] = useState("recent");
@@ -47,15 +49,15 @@ const Dashboard = () => {
 
   const renderContent = () => {
     switch (selectedOption) {
-      case "recent":
-        return <RecentProjects />;
-      case "timeline":
-        return <Timeline setSelectedOption={setSelectedOption}/>
-      case "projects":
-        return <Projects selectedOption={selectedOption}  setSelectedOption={setSelectedOption}
-        />;
-      // case "newAnalysis":
-      //   return <div><NewAnalysis/></div>;
+    //   case "recent":
+    //     return <RecentProjects />;
+    //   case "timeline":
+    //     return <Timeline setSelectedOption={setSelectedOption}/>
+    //   case "projects":
+    //     return <Projects selectedOption={selectedOption}  setSelectedOption={setSelectedOption}
+    //     />;
+      case "newAnalysis":
+        return <div><UserNewAnalysis/></div>;
       default:
         return <div>Welcome to SadakNirikshak Dashboard</div>;
     }
@@ -64,7 +66,7 @@ const Dashboard = () => {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <Sidebar
+      <UserSidebar
         isMinimized={isMinimized}
         setIsMinimized={setIsMinimized}
         selectedOption={selectedOption}
@@ -87,4 +89,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default UserDashboard;

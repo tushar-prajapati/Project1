@@ -1,6 +1,6 @@
 import React from "react";
 
-const Sidebar = ({ isMinimized, setIsMinimized, selectedOption, setSelectedOption }) => {
+const UserSidebar = ({ isMinimized, setIsMinimized, selectedOption, setSelectedOption }) => {
   return (
     <div
       className={`h-screen  bg-gray-900 text-white flex-shrink-0 transition-all duration-300 ${
@@ -18,7 +18,7 @@ const Sidebar = ({ isMinimized, setIsMinimized, selectedOption, setSelectedOptio
       </div>
 
       <div className="p-4 space-y-2">
-        <div
+        {/* <div
           className={`p-2 rounded-md cursor-pointer hover:bg-gray-700 ${
             selectedOption === "recent" ? "bg-gray-700" : ""
           }`}
@@ -26,9 +26,9 @@ const Sidebar = ({ isMinimized, setIsMinimized, selectedOption, setSelectedOptio
         >
           {!isMinimized && "Recent Projects"}
           {isMinimized && "📁"}
-        </div>
+        </div> */}
         
-        <div
+        {/* <div
           className={`p-2 rounded-md cursor-pointer hover:bg-gray-700 ${
             selectedOption === "projects" ? "bg-gray-700" : ""
           }`}
@@ -36,8 +36,8 @@ const Sidebar = ({ isMinimized, setIsMinimized, selectedOption, setSelectedOptio
         >
           {!isMinimized && "Projects"}
           {isMinimized && "📂"}
-        </div>
-        <div
+        </div> */}
+        {/* <div
           className={`p-2 rounded-md cursor-pointer hover:bg-gray-700 ${
             selectedOption === "timeline" ? "bg-gray-700" : ""
           }`}
@@ -45,8 +45,8 @@ const Sidebar = ({ isMinimized, setIsMinimized, selectedOption, setSelectedOptio
         >
           {!isMinimized && "Timeline"}
           {isMinimized && "🕒"}
-        </div>
-        {/* <div
+        </div> */}
+        <div
           className={`p-2 rounded-md cursor-pointer hover:bg-gray-700 ${
             selectedOption === "newAnalysis" ? "bg-gray-700" : ""
           }`}
@@ -54,10 +54,10 @@ const Sidebar = ({ isMinimized, setIsMinimized, selectedOption, setSelectedOptio
         >
           {!isMinimized && "NewAnalysis"}
           {isMinimized && "🕒"}
-        </div> */}
+        </div>
       </div>
     </div>
   );
 };
 
-export default Sidebar;
+export default UserSidebar;

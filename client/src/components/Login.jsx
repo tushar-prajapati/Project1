@@ -68,7 +68,7 @@ const Login = ({ openSignup, onLoginSuccess }) => {
         alert(response.data.message);
 
         // Redirect to dashboard or any other page
-        navigate("/dashboard");
+        navigate("/userdashboard");
       } else {
         alert("Login failed. Please check your credentials.");
       }
