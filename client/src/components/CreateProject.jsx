@@ -25,6 +25,7 @@ const CreateProject = ({ onProjectCreated }) => {
         title: data.title,
         description: data.description,
         segments: data.segments.split(",").map((seg) => seg.trim()),
+        stretch: parseInt(data.stretch),
       };
   
       // Send the request
@@ -96,6 +97,20 @@ const CreateProject = ({ onProjectCreated }) => {
         />
         {errors.segments && (
           <p className="text-sm text-red-500">{errors.segments.message}</p>
+        )}
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Stretch
+        </label>
+        <input
+          {...register("stretch", { required: "Stretch is required" })}
+          type="text"
+          placeholder="Enter Stretch"
+          className="w-full p-3 border border-gray-300 rounded-lg"
+        />
+        {errors.stretch && (
+          <p className="text-sm text-red-500">{errors.stretch.message}</p>
         )}
       </div>
 
