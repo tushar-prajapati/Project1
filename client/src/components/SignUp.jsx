@@ -1,13 +1,42 @@
 import React from "react";
-import { useForm } from "react-hook-form";
 import axios from "axios"; // Import axios for making API requests
 import { useNavigate } from "react-router-dom"; // Use useNavigate for navigation
+import { useForm, useFieldArray } from "react-hook-form";
+
 
 const SignUp = ({ openLogin }) => {
-  const { register, handleSubmit, formState: { errors }, getValues } = useForm();
-  const navigate = useNavigate(); // useNavigate hook for navigation
+  const { register, handleSubmit, formState: { errors }, getValues,control } = useForm();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "masterUsername",
+  });
+    const navigate = useNavigate(); // useNavigate hook for navigation
 
   const onSignupSubmit = async (data) => {
+    if(data.isAdmin==true){
+      try {
+        // API request to register the Admin
+        const response = await axios.post("http://localhost:3000/api/v1/admins/register", {
+          fullName: data.name,
+          email: data.email,
+          username: data.username,
+          password: data.password,
+          isAdmin: data.isAdmin, 
+          masterUsername : data.masterUsername
+        });
+  
+        // If registration is successful, redirect to login page
+        if (response.status === 201) {
+          alert("Registration successful! Please login.");
+          openLogin(); // Open the login form
+          navigate("/login"); // Navigate to the login page after successful registration
+        }
+      } catch (error) {
+        console.error("Registration failed:", error);
+        alert("An error occurred during registration. Please try again.");
+      }
+    }
+    else{
     try {
       // API request to register the user
       const response = await axios.post("http://localhost:3000/api/v1/users/register", {
@@ -15,7 +44,9 @@ const SignUp = ({ openLogin }) => {
         email: data.email,
         username: data.username,
         password: data.password,
-        isAdmin: data.isAdmin, // Send isAdmin status
+        isAdmin: data.isAdmin, 
+        masterUsername : data.masterUsername
+
       });
 
       // If registration is successful, redirect to login page
@@ -28,10 +59,11 @@ const SignUp = ({ openLogin }) => {
       console.error("Registration failed:", error);
       alert("An error occurred during registration. Please try again.");
     }
+  }
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm mx-auto">
+    <div className="bg-white rounded-lg shadow-lg p-6 max-h-screen max-w-sm mx-auto overflow-y-scroll">
       <h2 className="text-3xl font-bold text-gray-800 text-center mb-4">Create an Account</h2>
       <form onSubmit={handleSubmit(onSignupSubmit)} className="space-y-4">
         {/* Name Input */}
@@ -118,6 +150,21 @@ const SignUp = ({ openLogin }) => {
           </div>
           {errors.isAdmin && <span className="text-red-500 text-xs">{errors.isAdmin.message}</span>}
         </div>
+
+      {/* Master Username Field (conditionally rendered) */}
+      {/* {getValues("isAdmin") == "false" && ( */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Master Username</label>
+          <input
+            {...register("masterUsername")}
+            placeholder="Enter master username"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.masterUsername && (
+            <span className="text-red-500 text-xs">{errors.masterUsername.message}</span>
+          )}
+        </div>
+      {/* )} */}
 
         {/* Terms and Conditions */}
         <div className="flex items-center">
