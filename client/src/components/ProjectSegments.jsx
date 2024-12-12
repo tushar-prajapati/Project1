@@ -10,7 +10,7 @@ const ProjectSegments = ({ projectId, setSelectedOption }) => {
   const [segments, setSegments] = useState([]);
   const [projectName, setProjectName] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-  const { setSelectedSegmentId } = useSegmentContext();
+  const { setSelectedSegmentId } = useSegmentContext(); // Getting setSelectedSegmentId from context
   const [selectedSegment, setSelectedSegment] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -53,14 +53,20 @@ const ProjectSegments = ({ projectId, setSelectedOption }) => {
   const handleSegmentClick = (segment) => {
     setSelectedSegment({
       segmentId: segment._id,
-      length: 5,
-      startLatitude: 333,
-      startLongitude: 21,
-      endLatitude: 333,
-      endLongitude: 21,
-      userId: "675a00a30bc5481eba8c1289",
+      length: '',
+      startLatitude: '',
+      startLongitude: '',
+      endLatitude: '',
+      endLongitude: '',
+      userId: "",
     });
     setIsPopupOpen(true);
+  };
+
+  const handleTileClick = (segmentId) => {
+    // Set the selected segmentId in the context
+    setSelectedSegmentId(segmentId); // Set the selectedSegmentId globally in the context
+    setSelectedOption('timeline');
   };
 
   const handlePopupClose = () => {
@@ -86,8 +92,8 @@ const ProjectSegments = ({ projectId, setSelectedOption }) => {
         {segments.map((segment) => (
           <div
             key={segment._id}
-            className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow hover:shadow-md cursor-pointer"
-            onClick={() => handleSegmentClick(segment)}
+            className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow hover:shadow-md cursor-pointer relative"
+            onClick={() => handleTileClick(segment._id)} // Navigate and set segment ID in context
           >
             <div className="text-4xl text-yellow-500 mb-3">
               <FaFolder />
@@ -96,6 +102,16 @@ const ProjectSegments = ({ projectId, setSelectedOption }) => {
               {segment.name}
             </h4>
             <p className="text-sm text-gray-600 text-center mt-2">{segment.description}</p>
+            {/* Add Info button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent navigating when clicking the button
+                handleSegmentClick(segment);
+              }}
+              className="absolute top-2 right-2 px-1 py-0.5 bg-blue-500 text-white rounded-md"
+            >
+              +
+            </button>
           </div>
         ))}
       </div>
@@ -105,7 +121,7 @@ const ProjectSegments = ({ projectId, setSelectedOption }) => {
         segmentData={selectedSegment || {}}
         onSubmit={handlePopupSubmit}
         projectId={projectId}
-        setSelectedOption = {setSelectedOption}
+        setSelectedOption={setSelectedOption}
       />
     </div>
   );

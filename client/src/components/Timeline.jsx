@@ -9,7 +9,7 @@ const TimelinePage = ({setSelectedOption}) => {
   const [segmentData, setSegmentData] = useState([]);
   const [loading, setLoading] = useState(true);
 //   const navigate = useNavigate(); 
-
+console.log(selectedSegmentId,'selectedSegmentId')
   // Fetch segment data
   useEffect(() => {
     if (selectedSegmentId) {
