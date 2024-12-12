@@ -61,7 +61,7 @@ const UserDashboard = () => {
       case "uploadData":
         return <div><UploadData/></div>;
       case "usernewanalysisfol":
-        return <div><UserNewAnalysisfol/></div>;
+        return <div><UserNewAnalysisfol setSelectedOption={setSelectedOption}/></div>;
       default:
         return <div>Welcome to SadakNirikshak Dashboard</div>;
     }
